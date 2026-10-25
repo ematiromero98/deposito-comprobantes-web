@@ -169,14 +169,14 @@ document.getElementById("btnSubir").onclick = async ()=>{
   const m=document.getElementById("msgSubir"); const b=document.getElementById("btnSubir");
   const tipo=document.getElementById("tipo").value;
   b.disabled=true; b.innerHTML='<span class="spin"></span>Subiendo…';
-  let ok=0, err=0;
+  let ok=0, err=0, motivo="";
   for(const a of archivos){
     try{ await api({accion:"subir",pin:PIN,ingreso:ING,tipo,nombre:a.nombre,mime:a.mime,data_base64:a.b64}); ok++; }
-    catch(e){ err++; }
+    catch(e){ err++; motivo=e.message; }
   }
   b.innerHTML="Subir"; b.disabled=false;
   if(err===0){ show(m,`¡Listo! ${ok} archivo(s) subido(s) al ingreso.`,"ok"); archivos=[]; pintarThumbs(); }
-  else{ show(m,`${ok} subido(s), ${err} con error. Reintentá los que faltan.`,"err"); }
+  else{ show(m,`${ok} subido(s), ${err} con error (${motivo}). Reintentá los que faltan.`,"err"); }
 };
 document.getElementById("btnOtro").onclick=()=>{ location.href = location.pathname; };
 
